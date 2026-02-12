@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
@@ -34,7 +33,6 @@ const App: React.FC = () => {
 
     const sedeId = activeUser.sedeId;
     
-    // Fetch atomico dal database simulato
     setMembers(db.getMembers(sedeId));
     setCases(db.getCases(sedeId));
     setEvents(db.getEvents(sedeId));
@@ -42,7 +40,6 @@ const App: React.FC = () => {
     setNotifications(db.getNotifications(sedeId));
     setLogs(db.getLogs(sedeId));
 
-    // Controllo scadenze silente
     checkDeadlines(db.getCases(sedeId), activeUser);
   }, [currentUser]);
 
@@ -50,7 +47,6 @@ const App: React.FC = () => {
     const session = db.getCurrentSession();
     if (session) {
       setCurrentUser(session);
-      // Caricamento immediato dei dati dopo il check della sessione
       const sedeId = session.sedeId;
       setMembers(db.getMembers(sedeId));
       setCases(db.getCases(sedeId));
@@ -80,7 +76,6 @@ const App: React.FC = () => {
           sedeId: user.sedeId
         };
         db.saveNotification(notif);
-        // Invio email rimosso
       }
     });
   };
@@ -168,7 +163,7 @@ const App: React.FC = () => {
   return (
     <div className="flex min-h-screen bg-[#f8fafc] text-gray-900 antialiased font-sans">
       {isSidebarOpen && (
-        <div className="fixed inset-0 bg-blue-950/40 backdrop-blur-sm z-50 lg:hidden animate-fadeIn" onClick={() => setIsSidebarOpen(false)}></div>
+        <div className="fixed inset-0 bg-blue-950/40 backdrop-blur-sm z-50 lg:hidden" onClick={() => setIsSidebarOpen(false)}></div>
       )}
 
       <div className={`fixed inset-y-0 left-0 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 lg:static transition-transform duration-300 ease-in-out z-[60] lg:z-auto`}>
@@ -188,7 +183,7 @@ const App: React.FC = () => {
           <div className="flex items-center gap-4 md:gap-8">
             <button onClick={() => setIsNotifPanelOpen(!isNotifPanelOpen)} className={`relative p-2 md:p-3 rounded-2xl transition-all ${isNotifPanelOpen ? 'bg-blue-800 text-white' : 'text-gray-400 hover:text-blue-800 hover:bg-gray-50'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 md:h-6 md:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" /></svg>
-              {notifications.some(n => !n.isRead) && <span className="absolute top-1.5 right-1.5 md:top-2.5 md:right-2.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white shadow-xl animate-pulse"></span>}
+              {notifications.some(n => !n.isRead) && <span className="absolute top-1.5 right-1.5 md:top-2.5 md:right-2.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white shadow-xl"></span>}
             </button>
             <div className="flex items-center gap-3 md:gap-4 pl-4 md:pl-8 border-l border-gray-100">
                <div className="text-right hidden sm:block">
@@ -216,16 +211,6 @@ const App: React.FC = () => {
           </footer>
         </section>
       </main>
-
-      <style>{`
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-fadeIn { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .animate-slideUp { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        * { scroll-behavior: smooth; }
-      `}</style>
     </div>
   );
 };
