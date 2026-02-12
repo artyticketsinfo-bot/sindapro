@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
-    <!-- Tailwind CDN per stabilità immediata e configurazione tema -->
+    <!-- Tailwind CDN per stabilità immediata e configurazione tema istituzionale -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -65,12 +65,29 @@
         background-color: #f9fafb;
         color: #111827;
         font-family: 'Inter', sans-serif;
+        margin: 0;
       }
       .custom-shadow {
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
       .no-scrollbar::-webkit-scrollbar {
         display: none;
       }
-      .no-scrollbar {
-        -ms-overflow-style
+      * {
+        scroll-behavior: smooth;
+        box-sizing: border-box;
+      }
+      .animate-fadeIn { animation: fadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+      .animate-slideUp { animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Script di ingresso per l'applicazione React -->
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
