@@ -1,24 +1,26 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Gestione Sindacale - Stili Globali Safe */
 
 @layer base {
   body {
-    @apply font-sans bg-[#f9fafb] text-gray-900;
+    background-color: #f9fafb;
+    color: #111827;
+    font-family: 'Inter', sans-serif;
   }
 }
 
-@layer components {
-  .custom-shadow {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-  
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-  
-  .no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
+.custom-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+* {
+  scroll-behavior: smooth;
 }
