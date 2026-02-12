@@ -1,0 +1,8 @@
+{
+  "name": "Gestione Sindacale",
+  "description": "Piattaforma gestionale professionale per sedi sindacali, con dashboard, calendario, gestione iscritti e pratiche, ed esportazione PDF.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
