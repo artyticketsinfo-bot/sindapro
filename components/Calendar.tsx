@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { CalendarEvent, Case, CalendarEventType } from '../types';
 import { Icons, COLORS } from '../constants';
@@ -46,7 +45,7 @@ const Calendar: React.FC<CalendarProps> = ({ events, cases, onAddEvent, onUpdate
         type: newEvent.type,
         critical: newEvent.type === 'urgente' || newEvent.critical,
         category: 'altro',
-        sedeId: '' // Will be set by service/db
+        sedeId: '' 
       });
     }
     closeModal();
@@ -60,6 +59,13 @@ const Calendar: React.FC<CalendarProps> = ({ events, cases, onAddEvent, onUpdate
 
   const handleEdit = (event: CalendarEvent) => {
     setEditingEvent(event);
+    setShowModal(true);
+  };
+
+  const handleDayClick = (dayNum: number) => {
+    setActiveDay(dayNum);
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`;
+    setNewEvent(prev => ({ ...prev, date: dateStr }));
     setShowModal(true);
   };
 
@@ -155,7 +161,6 @@ const Calendar: React.FC<CalendarProps> = ({ events, cases, onAddEvent, onUpdate
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        {/* Calendar Grid */}
         <div className="lg:col-span-3 bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="grid grid-cols-7 bg-gray-50 border-b border-gray-100">
             {['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'].map(day => (
@@ -173,7 +178,7 @@ const Calendar: React.FC<CalendarProps> = ({ events, cases, onAddEvent, onUpdate
               return (
                 <button 
                   key={i} 
-                  onClick={() => isCurrentMonth && setActiveDay(dayNum)}
+                  onClick={() => isCurrentMonth && handleDayClick(dayNum)}
                   className={`min-h-[70px] md:min-h-[100px] p-1 md:p-2 border-r border-b border-gray-100 transition-all text-left group flex flex-col relative active:scale-[0.98] ${
                     isCurrentMonth ? 'bg-white hover:bg-blue-50/30' : 'bg-gray-50/50 cursor-default'
                   } ${activeDay === dayNum ? 'bg-blue-50/50 ring-2 ring-inset ring-blue-500 z-10' : ''}`}
@@ -207,7 +212,6 @@ const Calendar: React.FC<CalendarProps> = ({ events, cases, onAddEvent, onUpdate
           </div>
         </div>
 
-        {/* Selected Day Panel Responsive */}
         <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden animate-fadeIn h-fit max-h-[500px] lg:max-h-none">
           <div className="p-4 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
             <h3 className="text-sm font-bold text-gray-900">
@@ -228,13 +232,13 @@ const Calendar: React.FC<CalendarProps> = ({ events, cases, onAddEvent, onUpdate
                     </span>
                     {!e.id.toString().startsWith('case-') && (
                       <div className="flex gap-2 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity">
-                        <button onClick={() => toggleComplete(e)} className="p-1 text-green-600 hover:bg-green-50 rounded" title="Segna come completato">
+                        <button onClick={(e_ev) => { e_ev.stopPropagation(); toggleComplete(e); }} className="p-1 text-green-600 hover:bg-green-50 rounded" title="Segna come completato">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
                         </button>
-                        <button onClick={() => handleEdit(e)} className="p-1 text-blue-600 hover:bg-blue-50 rounded" title="Modifica">
+                        <button onClick={(e_ev) => { e_ev.stopPropagation(); handleEdit(e); }} className="p-1 text-blue-600 hover:bg-blue-50 rounded" title="Modifica">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" /></svg>
                         </button>
-                        <button onClick={() => onDeleteEvent(e.id)} className="p-1 text-red-600 hover:bg-red-50 rounded" title="Elimina">
+                        <button onClick={(e_ev) => { e_ev.stopPropagation(); onDeleteEvent(e.id); }} className="p-1 text-red-600 hover:bg-red-50 rounded" title="Elimina">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" /></svg>
                         </button>
                       </div>

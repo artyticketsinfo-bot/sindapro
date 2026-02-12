@@ -12,7 +12,6 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
   const [isRegistering, setIsRegistering] = useState(false);
-  const [isForgotPass, setIsForgotPass] = useState(false);
   const [publicView, setPublicView] = useState<ViewType | 'none'>('none');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -27,18 +26,6 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
     setIsLoading(true);
 
     try {
-      if (isForgotPass) {
-        if (!email) {
-          setError('Inserisci la tua email per il recupero.');
-          setIsLoading(false);
-          return;
-        }
-        // Funzionalità email disabilitata come richiesto
-        setError('Funzionalità di recupero password via email disabilitata. Contatta l\'amministratore di sistema.');
-        setIsLoading(false);
-        return;
-      }
-
       if (isRegistering) {
         if (!email || !password || !nomeSede || !operatore) {
           setError('Tutti i campi sono obbligatori.');
@@ -118,13 +105,15 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         <div className="bg-white rounded-[2.5rem] shadow-xl border border-gray-100 p-8 md:p-10">
           <div className="flex gap-4 mb-8">
             <button 
-              onClick={() => { setIsRegistering(false); setIsForgotPass(false); setError(''); }}
-              className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${!isRegistering && !isForgotPass ? 'bg-blue-50 text-blue-800 shadow-inner' : 'text-gray-400 hover:text-blue-800'}`}
+              type="button"
+              onClick={() => { setIsRegistering(false); setError(''); }}
+              className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${!isRegistering ? 'bg-blue-50 text-blue-800 shadow-inner' : 'text-gray-400 hover:text-blue-800'}`}
             >
               Accedi
             </button>
             <button 
-              onClick={() => { setIsRegistering(true); setIsForgotPass(false); setError(''); }}
+              type="button"
+              onClick={() => { setIsRegistering(true); setError(''); }}
               className={`flex-1 py-3 text-xs font-black uppercase tracking-widest rounded-xl transition-all ${isRegistering ? 'bg-blue-50 text-blue-800 shadow-inner' : 'text-gray-400 hover:text-blue-800'}`}
             >
               Registra Sede
@@ -151,21 +140,19 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                 />
               </div>
 
-              {!isForgotPass && (
-                <div>
-                  <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Password</label>
-                  <input 
-                    type="password" 
-                    required 
-                    className="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50 outline-none font-medium text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 transition-all" 
-                    placeholder="••••••••" 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                  />
-                </div>
-              )}
+              <div>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Password</label>
+                <input 
+                  type="password" 
+                  required 
+                  className="w-full px-5 py-4 rounded-2xl border border-gray-100 bg-gray-50 outline-none font-medium text-sm focus:bg-white focus:ring-2 focus:ring-blue-500 transition-all" 
+                  placeholder="••••••••" 
+                  value={password} 
+                  onChange={(e) => setPassword(e.target.value)} 
+                />
+              </div>
 
-              {isRegistering && !isForgotPass && (
+              {isRegistering && (
                 <>
                   <div>
                     <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1.5 ml-1">Denominazione Sede</label>
@@ -203,20 +190,8 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-              ) : isForgotPass ? 'Recupero Disabilitato' : isRegistering ? 'Attiva Account Sede' : 'Accedi al Sistema'}
+              ) : isRegistering ? 'Attiva Account Sede' : 'Accedi al Sistema'}
             </button>
-
-            {!isRegistering && (
-              <div className="text-center mt-4">
-                <button 
-                  type="button"
-                  onClick={() => { setIsForgotPass(!isForgotPass); setError(''); }}
-                  className="text-[10px] font-bold text-blue-600 uppercase tracking-widest hover:text-blue-800 transition-colors"
-                >
-                  {isForgotPass ? 'Torna al Login' : 'Password dimenticata?'}
-                </button>
-              </div>
-            )}
           </form>
         </div>
 
